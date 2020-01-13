@@ -5,3 +5,4 @@ def main(query):
     url = "https://www.youtube.com/results?search_query=" + query
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser')
+    

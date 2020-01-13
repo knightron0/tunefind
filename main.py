@@ -1,27 +1,11 @@
 from bs4 import BeautifulSoup
 import requests, getpass
 from gmusicapi import Mobileclient
+import importlib
+import glob, os
+import download
 
-
-def get_song_id(song):
-    try:
-        result = api.search(song,10)
-    except Exception as e:
-        print(e)
-        return False
-    print(result)
-    if len(result['song_hits']) > 0:
-        found_song = result['video_hits'][0]
-        song_id = found_song['track']['nid']
-        return song_id
-    else:
-        return False
-
-
-api = Mobileclient()
-api.perform_oauth()
-api.oauth_login(api.FROM_MAC_ADDRESS)
-playlist = api.create_playlist("hiii")
+idcurr = 0
 page = requests.get("https://www.tunefind.com/show/derry-girls")
 soup = BeautifulSoup(page.content, 'html.parser')
 # EpisodeListItem__links___xftsa 
@@ -58,12 +42,15 @@ for i in eplinks:
 print(len(allsongs), len(allartists))
 
 
-ids = []
+songs = []
 for i in range(len(allsongs)):
     search_song = "{} - {}".format(allartists[i], allsongs[i])
-    song_id = get_song_id(search_song)
-    print(song_id)
-    if song_id:
-        ids.append(song_id)
-# print(ids)
-# api.add_songs_to_playlist(playlist, ids)
+    songs.append(search_song)
+
+songs = set(songs)
+print(len(songs))
+    # download.main(search_song)
+
+os.chdir("/mydir")
+for file in glob.glob("*.mp3"):
+    print(file)
