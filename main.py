@@ -14,7 +14,7 @@ if(inpt == "y"):
 
 idcurr = 0
 show = input("Enter a show: ")
-upload.createplist("go away INOI")
+upload.createplist(show)
 show.replace(" ", "+")
 showurl = "https://www.tunefind.com/show/" + show
 page = requests.get(showurl)
@@ -51,14 +51,13 @@ for i in eplinks:
         for k in lol:
             allsongs.append(k.text)
 
-
+print("Loading.....")
 songs = []
 for i in range(len(allsongs)):
     search_song = "{} - {}".format(allartists[i], allsongs[i])
     songs.append(search_song)
 
 songs = set(songs)
-print(songs)
 for i in songs:
     modified = ""
     for j in i:
@@ -70,9 +69,9 @@ for i in songs:
             continue
         else:
             modified += j
-    print(modified)
     download.main(modified)
 
 for file in glob.glob("*.mp3"):
     upload.upload(file)
+    os.remove(file)
 upload.appendtoplaylist()
